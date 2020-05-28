@@ -5,19 +5,13 @@
 
   <h2>Blog</h2>
 
-  #for(post in posts):
+  #for(item in items):
   <article>
-    <a href="/#(post.slug)">
-      <img src="#(post.image)">
-      <h3>#(post.title)</h3>
-      <p>#(post.excerpt)</p>
-      <p class="category">
-        #if(post.category != nil):
-          #(post.category)
-        #else:
-          Uncategorized
-        #endif
-      </p>
+    <a href="/#(item.post.slug)">
+      <img src="#(item.post.image)">
+      <h3>#(item.post.title) - #(item.post.date)</h3>
+      <p>#(item.post.excerpt)</p>
+      <p class="category">#(item.category.title)</p>
     </a>
   </article>
   #endfor

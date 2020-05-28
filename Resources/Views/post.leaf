@@ -3,17 +3,11 @@
 
 <section id="blog" class="wrapper">
   <img src="#(post.image)">
-  <h2>#(post.title) (#(post.date))</h2>
-  <p>#(post.excerpt)</p>
-  <p class="category">
-    #if(post.category != nil):
-      #(post.category)
-    #else:
-      Uncategorized
-    #endif
-  </p>
+  <h2>#(item.post.title) (#(item.post.date))</h2>
+  <p>#(item.post.excerpt)</p>
+  <p class="category">#(item.category.title)</p>
   <hr>
-  <p>#(post.content)</p>
+  <p>#(item.post.content)</p>
 </section>
 
 #endexport
