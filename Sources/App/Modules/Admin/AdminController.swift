@@ -14,8 +14,21 @@ struct AdminController {
             let header: String
             let message: String
         }
-        let user = try req.auth.require(UserModel.self)
-        let context = Context(title: "myPage - Admin", header: "Hi \(user.email)", message: "Welcome to the CMS!")
+        // Use UserModel.redirectMiddleware(path:) in AdminRouter instead
+        // let user = try req.auth.require(UserModel.self)
+        let user = req.auth.get(UserModel.self)
+        let context = Context(title: "myPage - Admin", header: "Hi \(user?.email ?? "")", message: "Welcome to the CMS!")
         return req.view.render("Admin/home", context)
+    }
+    func postTabelView(_ req: Request) throws -> EventLoopFuture<View> {
+        struct Context: Encodable {
+            let list: [BlogPostModel.ViewContext]
+        }
+        return BlogPostModel.query(on: req.db)
+            .all()
+            .mapEach(\.viewContext)
+            .flatMap { posts in
+                req.view.render("Admin/postTable", Context(list: posts))
+            }
     }
 }

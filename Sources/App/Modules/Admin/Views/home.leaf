@@ -6,6 +6,7 @@
 </section>
 <section class="wrapper">
   <p>#(message)</p>
+  <a href="/admin/posts">Blog posts</a>
 </section>
 
 #endexport
