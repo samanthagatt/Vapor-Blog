@@ -16,6 +16,11 @@ public func configure(_ app: Application) throws {
     // Cache-ing requires you to restart the server to see changes in leaf files
     app.leaf.cache.isEnabled = app.environment.isRelease
     
+    let workingDir = app.directory.workingDirectory
+    app.leaf.configuration.rootDirectory = "/"
+    // Uses custom file naming system
+    app.leaf.files = ModularViewFiles(workingDir: workingDir, fileio: app.fileio)
+    
     // Sets up sessions to use fluent
     app.sessions.use(.fluent)
     // Adds fluent default migration ("_fluent_sessions" table)

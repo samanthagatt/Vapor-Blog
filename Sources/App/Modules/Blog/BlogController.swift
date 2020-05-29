@@ -36,7 +36,7 @@ struct BlogController {
             // When the future is fulfilled, create the context and render the view
             }.flatMap { posts in
                 let context = Context(title: "myProject - Blog", items: posts)
-                return req.view.render("blog", context)
+                return req.view.render("Blog/blog", context)
             }
     }
     func postView(req: Request) throws -> EventLoopFuture<Response> {
@@ -67,7 +67,7 @@ struct BlogController {
                 }
                 let item = PostWithCategory(category: post.category.viewContext, post: post.viewContext)
                 let context = Context(title: "myProject - \(post.title)", item: item)
-                return req.view.render("post", context).encodeResponse(for: req)
+                return req.view.render("Blog/post", context).encodeResponse(for: req)
             }
     }
 }

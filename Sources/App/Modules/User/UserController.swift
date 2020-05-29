@@ -13,7 +13,7 @@ struct UserController {
             let title: String
         }
         let context = Context(title: "myProject - Sign in")
-        return req.view.render("login", context)
+        return req.view.render("User/login", context)
     }
     func login(req: Request) throws -> Response {
         // UserCredentialsAuthenticator middlewear is applied to the route that uses this fn
