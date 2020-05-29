@@ -27,7 +27,6 @@ struct UserController {
     }
     func logout(req: Request) throws -> Response {
         req.auth.logout(UserModel.self)
-        req.logger.info("Unauthenticating!!!")
         req.session.unauthenticate(UserModel.self)
         return req.redirect(to: "/")
     }

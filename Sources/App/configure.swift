@@ -35,6 +35,7 @@ public func configure(_ app: Application) throws {
         FrontendModule(),
         BlogModule(),
         UserModule(),
+        AdminModule(),
     ]
     for module in modules {
         try module.configure(app)

@@ -44,11 +44,7 @@ struct BlogController {
             let title: String
             let item: PostWithCategory
         }
-        
-        req.logger.debug("Path!!\n\(req.url.path)")
         let slug = req.url.path.trimmingCharacters(in: .init(charactersIn: "/"))
-        req.logger.debug("Slug!!\n\(slug)")
-        
         return BlogPostModel.query(on: req.db)
             // Makes sure only blog posts with the same slug are inclueded in query
             .filter(\.$slug == slug)
