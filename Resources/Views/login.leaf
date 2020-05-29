@@ -1,0 +1,17 @@
+#extend("index"):
+#export("body"):
+
+<section class="wrapper">
+<form action="/sign-in" method="post">
+  <label for="eamil">Email:</label>
+  <input type="eamil" id="email" class="field" name="email">
+
+  <label for="password">Email:</label>
+  <input type="password" id="password" class="field" name="password">
+
+  <input type="submit" class="submit" value="submit">
+</form>
+</section>
+
+#endexport
+#endextend

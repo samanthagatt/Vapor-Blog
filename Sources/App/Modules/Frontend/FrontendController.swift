@@ -13,8 +13,16 @@ struct FrontendController {
             let title: String
             let header: String
             let message: String
+            let email: String?
         }
-        let context = Context(title: "myPage - Home", header: "Hi there,", message: "Welcome to my awesome page")
+        var email: String?
+        if let user = req.auth.get(UserModel.self) {
+            email = user.email
+        }
+        let context = Context(title: "myPage - Home",
+                              header: "Hi there,",
+                              message: "Welcome to my awesome page",
+                              email: email)
         return req.view.render("home", context)
     }
 }

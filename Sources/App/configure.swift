@@ -16,9 +16,20 @@ public func configure(_ app: Application) throws {
     // Cache-ing requires you to restart the server to see changes in leaf files
     app.leaf.cache.isEnabled = app.environment.isRelease
     
+    // Sets up sessions to use fluent
+    app.sessions.use(.fluent)
+    // Adds fluent default migration ("_fluent_sessions" table)
+    app.migrations.add(SessionRecord.migration)
+    // Adds sessions middleware
+    // Will try to load session data from session cookie stored locally on client side
+    // Session cookie simply stores session identifier with no additional data
+    // Rest of data is stored in "_fluent_sessions" table here on the server
+    app.middleware.use(app.sessions.middleware)
+    
     let modules: [Module] = [
         FrontendModule(),
-        BlogModule()
+        BlogModule(),
+        UserModule(),
     ]
     for module in modules {
         try module.configure(app)

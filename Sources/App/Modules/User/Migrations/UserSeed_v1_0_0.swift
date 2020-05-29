@@ -9,9 +9,9 @@ import Vapor
 
 struct UserSeed_v1_0_0 {
     func users() -> [UserModel] {
-        guard let pword = try? Bcrypt.hash("ChangeMe") else { return [] }
+        guard let password = try? Bcrypt.hash("ChangeMe") else { return [] }
         return [
-            UserModel(email: "smfgatt@gmail.com", password: pword)
+            UserModel(email: "smfgatt@gmail.com", password: password)
         ]
     }
 }
