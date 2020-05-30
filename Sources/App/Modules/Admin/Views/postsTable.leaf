@@ -3,6 +3,7 @@
 
 <div class="wrapper">
   <h2>Posts</h2>
+  <a href="/admin/posts/new">Create</a>
 </div>
 
 <table class="wrapper">

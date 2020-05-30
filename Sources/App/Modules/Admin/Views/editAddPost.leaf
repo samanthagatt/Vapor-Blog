@@ -1,0 +1,61 @@
+#extend("Admin/Index"):
+#export("body"):
+
+<div class="wrapper">
+  <h2>
+    <a href="/admin/posts">Posts</a> /
+    #if(id != nil):
+      Edit
+    #else:
+      Create
+    #endif
+  </h2>
+  #if(id != nil):
+    <a href="/#(slug)" target="_blank">Preview</a>
+  #endif
+</div>
+
+<form id="post-edit-form" 
+  class="wrapper" 
+  method="post" 
+  action="/admin/posts/#if(id != nil):#(id)#else:new#endif">
+  
+  <input type="hidden" name="id" value="#(id)">
+
+  #for(field in fields):
+  <section>
+
+    <label for="#(field.name)">
+      #(field.title)
+      #if(field.requiredText != nil):
+        <span class="required">#(field.requiredText)</span>
+      #endif
+    </label>
+
+    #if(field.type == "textarea"):
+    <textarea id="#(field.name)"
+      class="#(field.class)"
+      name="#(field.name)">#(field.value)</textarea>
+    
+    #else:
+    <input id="#(field.name)" 
+      class="#(field.class)"
+      type="#(field.type)"
+      name="#(field.name)"
+      value="#(field.value)">  
+    #endif
+      
+    #if(field.error != nil):
+      <span class="error">#(field.error)</span>
+    #endif
+
+  </section>
+  #endfor
+
+  <section>
+    <input type="submit" class="submit" value="Save">
+  </section>
+</form>
+
+#endexport
+#endextend

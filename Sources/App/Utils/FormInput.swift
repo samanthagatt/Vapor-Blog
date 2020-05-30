@@ -7,12 +7,16 @@
 
 import Foundation
 
+protocol Form: Encodable {
+    var fields: [FormInput] { get }
+}
+
 struct FormInput: Encodable {
     let `class`: String
     let name: String
     let title: String
     let type: String
-    let value: String
+    var value: String
     let requiredText: String?
     let error: String?
     
@@ -55,27 +59,6 @@ struct FormInput: Encodable {
             FormInput(name: BlogPostModel.FieldKeys.date.description,
                       title: "Date",
                       value: DateFormatter.year.string(from: post.date),
-                      requiredText: "(yyyy)")
-        ]
-    }
-    
-    static func inputsForBlogPost() -> [FormInput] {
-        [
-            FormInput(name: BlogPostModel.FieldKeys.title.description,
-                      title: "Title"),
-            FormInput(name: BlogPostModel.FieldKeys.slug.description,
-                      title: "Slug"),
-            FormInput(class: "small",
-                      name: BlogPostModel.FieldKeys.excerpt.description,
-                      title: "Excerpt",
-                      type: "textarea",
-                      requiredText: nil),
-            FormInput(class: "large",
-                      name: BlogPostModel.FieldKeys.content.description,
-                      title: "Content",
-                      requiredText: nil),
-            FormInput(name: BlogPostModel.FieldKeys.date.description,
-                      title: "Date",
                       requiredText: "(yyyy)")
         ]
     }
