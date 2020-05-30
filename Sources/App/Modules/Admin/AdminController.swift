@@ -45,7 +45,8 @@ struct AdminController {
             .first()
             .unwrap(or: Abort(.notFound))
             .flatMap { category in
-                model.$category.id = category.id!
+                // category.id should never be nil
+                model.$category.id = category.id ?? UUID()
                 return model.create(on: req.db)
             }.map {
                 req.redirect(to: "/admin/posts")

@@ -32,9 +32,6 @@ final class UserModel: Model, Authenticatable, SessionAuthenticatable {
 extension UserModel {
     typealias SessionID = UUID
     
-    /// Unique session identifier.
-    /// - Warning: Should only be accessed in throwing functions
-    /// since variable returns force unwrapped id and id is optional
-    /// - Note: Inherited from SessionAuthenticatable.
-    var sessionID: UUID { id! }
+    // Should never be nil
+    var sessionID: UUID { id ?? UUID() }
 }
