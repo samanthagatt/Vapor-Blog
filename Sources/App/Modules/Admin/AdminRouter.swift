@@ -11,17 +11,17 @@ struct AdminRouter: RouteCollection {
     let controller = AdminController()
     
     func boot(routes: RoutesBuilder) throws {
-        routes.grouped([
-                UserSessionAuthenticator(),
-                // Checks req.auth storage and redirects to "/" if unauthorized
-                UserModel.redirectMiddleware(path: "/")
-            ])
-            .get("admin", use: controller.homeView)
-        routes.grouped([
-                UserSessionAuthenticator(),
-                UserModel.redirectMiddleware(path: "/")
-            ])
-            .grouped("admin")
-            .get("posts", use: controller.postTabelView)
+        let protected = routes.grouped([
+            UserSessionAuthenticator(),
+            UserModel.redirectMiddleware(path: "/")
+        ])
+        
+        let admin = protected.grouped("admin")
+        admin.get(use: controller.homeView)
+        
+        let posts = admin.grouped("posts")
+        posts.get(use: controller.postsView)
+        posts.get("new", use: controller.addPostView)
+        posts.post("new", use: controller.create)
     }
 }

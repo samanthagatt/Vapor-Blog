@@ -20,7 +20,7 @@ struct AdminController {
         let context = Context(title: "myPage - Admin", header: "Hi \(user?.email ?? "")", message: "Welcome to the CMS!")
         return req.view.render("Admin/home", context)
     }
-    func postTabelView(_ req: Request) throws -> EventLoopFuture<View> {
+    func postsView(_ req: Request) throws -> EventLoopFuture<View> {
         struct Context: Encodable {
             let list: [BlogPostModel.ViewContext]
         }
@@ -28,7 +28,27 @@ struct AdminController {
             .all()
             .mapEach(\.viewContext)
             .flatMap { posts in
-                req.view.render("Admin/postTable", Context(list: posts))
+                req.view.render("Admin/postsTable", Context(list: posts))
+            }
+    }
+    func addPostView(_ req: Request) throws -> EventLoopFuture<View> {
+        return req.view.render("Admin/editAddPost", EditAddPostForm())
+    }
+    func create(_ req: Request) throws -> EventLoopFuture<Response> {
+        let form = try EditAddPostForm(from: req)
+        let model = BlogPostModel()
+        // Set default image
+        model.image = "/images/posts/01.jpg"
+        form.write(to: model)
+        // Set default category
+        return BlogCategoryModel.query(on: req.db)
+            .first()
+            .unwrap(or: Abort(.notFound))
+            .flatMap { category in
+                model.$category.id = category.id!
+                return model.create(on: req.db)
+            }.map {
+                req.redirect(to: "/admin/posts")
             }
     }
 }
