@@ -35,7 +35,12 @@ struct AdminController {
         return req.view.render("Admin/editAddPost", EditAddPostForm())
     }
     func create(_ req: Request) throws -> EventLoopFuture<Response> {
-        let form = try EditAddPostForm(from: req)
+        var form = try EditAddPostForm(from: req)
+        guard form.validate() else {
+            req.logger.info("THISSSSS: \(form.fields.first?.value ?? "None") \(form.fields.first?.error ?? "None")")
+            return req.view.render("Admin/editAddPost", form)
+                .encodeResponse(for: req)
+        }
         let model = BlogPostModel()
         // Set default image
         model.image = "/images/posts/01.jpg"

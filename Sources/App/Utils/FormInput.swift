@@ -18,7 +18,7 @@ struct FormInput: Encodable {
     let type: String
     var value: String
     let requiredText: String?
-    let error: String?
+    var error: String?
     
     init(class: String = "input",
          name: String,

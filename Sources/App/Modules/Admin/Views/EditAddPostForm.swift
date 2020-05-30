@@ -37,24 +37,22 @@ struct EditAddPostForm: Form {
         FormInput(class: "small",
                   name: Self.CodingKeys.excerpt.stringValue,
                   title: DisplayNames.excerpt.rawValue,
-                  type: "textarea",
-                  requiredText: nil)
+                  type: "textarea")
     var content: FormInput =
         FormInput(class: "large",
                   name: Self.CodingKeys.content.stringValue,
                   title: DisplayNames.content.rawValue,
-                  type: "textarea",
-                  requiredText: nil)
+                  type: "textarea")
     var date: FormInput =
         FormInput(name: Self.CodingKeys.date.stringValue,
                   title: DisplayNames.date.rawValue,
                   requiredText: "(yyyy)")
     
+    /// Array of all the input fields for Leaf
+    /// - Note: Not a computed property because Leaf can't recognize them
     private(set) var fields: [FormInput] = []
     
-    init() {
-        fields = [title, slug, excerpt, content, date]
-    }
+    init() { refreshFields() }
     
     init(from req: Request) throws {
         let context = try req.content.decode(Post.self)
@@ -66,7 +64,7 @@ struct EditAddPostForm: Form {
         self.excerpt.value = context.excerpt
         self.content.value = context.content
         self.date.value = context.date
-        fields = [title, slug, excerpt, content, date]
+        refreshFields()
     }
     
     func write(to model: BlogPostModel) {
@@ -75,5 +73,33 @@ struct EditAddPostForm: Form {
         model.excerpt = excerpt.value
         model.content = content.value
         model.date = DateFormatter.year.date(from: date.value) ?? Date()
+    }
+    
+    mutating func validate() -> Bool {
+        title.error = title.value.isEmpty ? "Title is required" : nil
+        slug.error = slug.value.isEmpty ? "Slug is required" : nil
+        excerpt.error = excerpt.value.isEmpty ? "Excerpt is required" : nil
+        content.error = content.value.isEmpty ? "Content is required" : nil
+        
+        let year = DateFormatter.year.date(from: date.value)
+        date.error = date.value.isEmpty ? "Date is required" :
+            year == nil ? "Invalid date" : nil
+        
+        refreshFields()
+        
+        if title.error == nil &&
+            slug.error == nil &&
+            excerpt.error == nil &&
+            content.error == nil &&
+            year != nil {
+                return true
+        } else { return false }
+    }
+    
+    /// Should be called whenever any of the fields are updated
+    ///
+    /// Needed since Leaf won't recognize computed properties
+    private mutating func refreshFields() {
+        fields = [title, slug, excerpt, content, date]
     }
 }
