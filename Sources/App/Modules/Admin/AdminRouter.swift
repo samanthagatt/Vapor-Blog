@@ -23,5 +23,8 @@ struct AdminRouter: RouteCollection {
         posts.get(use: controller.postsView)
         posts.get("new", use: controller.addPostView)
         posts.post("new", use: controller.create)
+        
+        posts.get(":id", use: controller.editPostView)
+        posts.post(":id", use: controller.editPost)
     }
 }

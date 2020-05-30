@@ -11,7 +11,7 @@
     #endif
   </h2>
   #if(id != nil):
-    <a href="/#(slug)" target="_blank">Preview</a>
+    <a href="/#(slug)" target="_blank">View</a>
   #endif
 </div>
 

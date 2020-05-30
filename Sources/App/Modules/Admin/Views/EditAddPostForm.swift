@@ -57,22 +57,37 @@ struct EditAddPostForm: Form {
     init(from req: Request) throws {
         let context = try req.content.decode(Post.self)
         if !context.id.isEmpty {
-            self.id = context.id
+            id = context.id
         }
-        self.title.value = context.title
-        self.slug.value = context.slug
-        self.excerpt.value = context.excerpt
-        self.content.value = context.content
-        self.date.value = context.date
+        title.value = context.title
+        slug.value = context.slug
+        excerpt.value = context.excerpt
+        content.value = context.content
+        date.value = context.date
         refreshFields()
     }
     
-    func write(to model: BlogPostModel) {
-        model.title = title.value
-        model.slug = slug.value
-        model.excerpt = excerpt.value
-        model.content = content.value
-        model.date = DateFormatter.year.date(from: date.value) ?? Date()
+    init(from post: BlogPostModel) {
+        id = post.id?.uuidString
+        title.value = post.title
+        slug.value = post.slug
+        excerpt.value = post.excerpt
+        content.value = post.content
+        date.value = DateFormatter.year.string(from: post.date)
+        refreshFields()
+    }
+    
+    func createPost() -> BlogPostModel {
+        let post = BlogPostModel()
+        write(to: post)
+        return post
+    }
+    func write(to post: BlogPostModel) {
+        post.title = title.value
+        post.slug = slug.value
+        post.excerpt = excerpt.value
+        post.content = content.value
+        post.date = DateFormatter.year.date(from: date.value) ?? Date()
     }
     
     mutating func validate() -> Bool {
