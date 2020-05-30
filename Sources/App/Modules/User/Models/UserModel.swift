@@ -14,7 +14,6 @@ final class UserModel: Model, Authenticatable, SessionAuthenticatable {
     struct FieldKeys {
         static var email: FieldKey { "email" }
         static var password: FieldKey { "password" }
-        static var sessionID: FieldKey { "sessionID" }
     }
     
     @ID() var id: UUID?
@@ -33,6 +32,9 @@ final class UserModel: Model, Authenticatable, SessionAuthenticatable {
 extension UserModel {
     typealias SessionID = UUID
     
-    // Should never be nil
+    /// Unique session identifier.
+    /// - Warning: Should only be accessed in throwing functions
+    /// since variable returns force unwrapped id and id is optional
+    /// - Note: Inherited from SessionAuthenticatable.
     var sessionID: UUID { id! }
 }
