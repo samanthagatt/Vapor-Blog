@@ -34,5 +34,5 @@ extension UserModel {
     typealias SessionID = UUID
     
     // Should never be nil
-    var sessionID: UUID { id ?? UUID() }
+    var sessionID: UUID { id! }
 }
