@@ -18,3 +18,36 @@
         <img src="http://img.shields.io/badge/swift-5-brightgreen.svg" alt="Swift 5">
     </a>
 </p>
+
+# Vapor Blog
+
+## Initial Setup (Using Xcode 11.4.1)
+* Fork and clone repository
+* Open `Package.swift` in Xcode
+* Wait until all dependencies are cloned/installed
+* Edit `Run` scheme
+    * Select `Run` (Debug) from the left side panel
+    * Select `Options` on the top panel
+    * Select `Use custom working directory:` so Xcode doesn't use `DerivedData/`
+        * Choose the folder containing Package.swift
+* Duplicate `Run` scheme
+* Name the duplicate `Migrate`
+* Edit `Migrate` scheme
+    * Select `Run` (Debug) from the left side panel
+    * Make sure correct folder is selected for `Use custom working directory:` in `Options` (same as `Run` scheme)
+    * Select `Arguments` on the top panel
+    * Add an the argument `migrate` to `Arguments Passed On Launch`
+* Run `Migrate` scheme
+    * Should be prompted with the following
+        ```
+        The following migration(s) will be prepared:
+        + _Migration on default
+        + BlogMigration_v1_0_0 on default
+        + UserMigration_v1_0_0 on default
+        Would you like to continue?
+        y/n> 
+        ```
+    * Type `y` and then enter
+* Run `Run` scheme
+    * Server will run on port 8080, so make sure it's available before running
+* Now you should be set!
