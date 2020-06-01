@@ -34,7 +34,7 @@
     </div>
   </main>
 
-  <!-- <script src="/javascript/admin.js"></script> -->
+  <script src="/javascript/admin.js"></script>
 </body>
 
 </html>

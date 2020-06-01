@@ -24,7 +24,10 @@ struct AdminRouter: RouteCollection {
         posts.get("new", use: controller.addPostView)
         posts.post("new", use: controller.create)
         
-        posts.get(":id", use: controller.editPostView)
-        posts.post(":id", use: controller.editPost)
+        let post = posts.grouped(":id")
+        post.get(use: controller.editPostView)
+        post.post(use: controller.editPost)
+        
+        post.post("delete", use: controller.deletePost)
     }
 }

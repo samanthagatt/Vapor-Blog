@@ -84,7 +84,7 @@ extension AdminController {
                 // Id should not be nil since post was already created
                 guard let id = post.id else {
                     // Redirect to all blog posts if it is
-                    return req.redirect(to: "blog")
+                    return req.redirect(to: "/admin/posts")
                 }
                 // Redirect to new posts page
                 return req.redirect(to: id.uuidString)
@@ -106,8 +106,13 @@ extension AdminController {
             return post.update(on: req.db)
         // Wait until save is done (future is resolved)
         }.map {
-            // Redirect to post's page (will be updated now)
-            return req.redirect(to: "/\(form.slug.value)")
+            // Redirect to posts page (will be updated now)
+            return req.redirect(to: "/admin/posts")
+        }
+    }
+    func deletePost(req: Request) throws -> EventLoopFuture<String> {
+        try findPost(on: req).flatMap { item in
+            item.delete(on: req.db).map { item.id?.uuidString ?? "No UUID" }
         }
     }
 }
